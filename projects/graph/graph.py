@@ -183,7 +183,29 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+           # make stack
+        stack = Stack()
+        #  make set for the visited nodes
+        visited = set()
+        # put our starting node in the stack
+        stack.push([starting_vertex])
+
+        def innner_recursion():
+            if stack.size() == 0:
+                # print('stopping')
+                return
+            path = stack.pop()
+            current = path[-1]
+            if current is destination_vertex:
+                return path
+            visited.add(current)
+            edges = self.get_neighbors(current)
+            for edge in edges:
+                new_path = list(path)
+                new_path.append(edge)
+                stack.push(new_path)
+            return innner_recursion()
+        return innner_recursion()
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
