@@ -42,14 +42,14 @@ class Graph:
         # if the queue is not empty, we have more nodes to visit
         while queue.size() > 0:
             # get the next node out of line
-            currrent_node = queue.dequeue()
+            current_node = queue.dequeue()
             # check to see if it has been visited
-            if currrent_node not in visited:
+            if current_node not in visited:
             # if not, mark as visited
-                visited.add(currrent_node)
-                print(currrent_node)
+                visited.add(current_node)
+                print(current_node)
             # and get all of it's neighbors
-                edges = self.get_neighbors(currrent_node)
+                edges = self.get_neighbors(current_node)
             # add neighbors to the queue
                 for edge in edges:
                     queue.enqueue(edge)
@@ -80,33 +80,43 @@ class Graph:
                 for edge in edges:
                     stack.push(edge)
 
-    def dft_recursive(self, starting_vertex):
+    def dft_recursive(self, starting_vertex, visited=set()):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
 
         This should be done using recursion.
         """
-        # make stack
-        stack = Stack()
-        #  make set for the visited nodes
-        visited = set()
-        # put our starting node in the stack
-        stack.push(starting_vertex)
+        # first time done
+        # # make stack
+        # stack = Stack()
+        # #  make set for the visited nodes
+        # visited = set()
+        # # put our starting node in the stack
+        # stack.push(starting_vertex)
 
-        def innner_recursion():
-            if stack.size() == 0:
-                # print('stopping')
-                return
-            current = stack.pop()
-            if current not in visited:
-                visited.add(current)
-                print(current)
-                edges = self.get_neighbors(current)
-                for edge in edges:
-                    stack.push(edge)
-            return innner_recursion()
-        innner_recursion()
+        # def innner_recursion():
+        #     if stack.size() == 0:
+        #         # print('stopping')
+        #         return
+        #     current = stack.pop()
+        #     if current not in visited:
+        #         visited.add(current)
+        #         print(current)
+        #         edges = self.get_neighbors(current)
+        #         for edge in edges:
+        #             stack.push(edge)
+        #     return innner_recursion()
+        # return innner_recursion()
+
+        # Tim's solution
+        visited.add(starting_vertex)
+        edges = self.get_neighbors(starting_vertex)
+        if len(edges) == 0:
+            return
+        for edge in edges:
+            if edge not in visited:
+                self.dft_recursive(edge, visited)
 
 
 
