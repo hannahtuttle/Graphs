@@ -1,5 +1,18 @@
 import random
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -64,6 +77,13 @@ class SocialGraph:
         # and add those friendships
         for friendship in random_friendships:
             self.add_friendship(friendship[0], friendship[1])
+    
+    def get_neighbors(self, user_id):
+        """
+        Get all neighbors (edges) of a vertex.
+        """
+        # print(self.friendships[user_id])
+        return self.friendships[user_id]
 
     def get_all_social_paths(self, user_id):
         """
@@ -74,8 +94,34 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-        visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        # do a bfs and save the last node to the disctionary as a key and then save the shortest path as a value
+                # make a queue
+        print('user_id',user_id)
+        queue = Queue()
+        # Note that this is a dictionary, not a set
+        visited = {}  
+        # enqueues a Path To the starting_vertex
+        queue.enqueue([user_id])
+        # while queue isn't empty:
+        while queue.size() > 0:
+            # dequeue the next path
+            path = queue.dequeue()
+            # current_node is the last thing in the path
+            current_node = path[-1]
+            # print('current_node', current_node)
+            # else mark this as visited
+            if current_node not in visited:
+                visited[current_node]= path
+                # get the neighbors
+                edges = self.get_neighbors(current_node)
+                # for each one, ad a Path To IT to the queue
+                for edge in edges:
+                    print('edge', edge)
+                    new_path = list(path)
+                    new_path.append(edge)
+                    queue.enqueue(new_path)
+        
         return visited
 
 
